@@ -18,6 +18,10 @@
 # The library is then used to link the final shared library (dnnl_graph.so) and unit level
 # tests (dnnl_graph_unit_test)
 
+if(MSVC)
+    add_definitions(-DDNNL_GRAPH_DLL_EXPORTS)
+endif()
+
 file(GLOB HEADERS_ROOT
     ${CMAKE_CURRENT_SOURCE_DIR}/../include/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../include/*.hpp
@@ -100,6 +104,11 @@ endif()
 endif()
 endif()
 
+if (UNIX AND NOT APPLE)
+    # Not every compiler adds -ldl automatically
+    list(APPEND EXTRA_SHARED_LIBS "${CMAKE_DL_LIBS}")
+endif()
+
 target_link_libraries(${LIB_NAME}_static
     LINK_PRIVATE
     ${DNNL_GRAPH_STATIC_PRE_LINK}
@@ -119,7 +128,7 @@ target_link_libraries(${LIB_NAME}
     LINK_PUBLIC
     ${DNNL_GRAPH_STATIC_PRE_LINK}
     dnnl
-    dl
+    ${EXTRA_SHARED_LIBS}
     ${DNNL_GRAPH_STATIC_POST_LINK}
     ${OPENMP_FLAG} # Need to placed after ${DNNL_GRAPH_STATIC_POST_LINK} to avoid duplicate symbols
     ${DNNL_GRAPH_SYCL_LINK_FLAGS}

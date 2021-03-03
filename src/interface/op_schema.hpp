@@ -227,7 +227,11 @@ private:
     static op_name_version_schema_map &get_map();
 };
 
+#ifdef _WIN32
+#define DNNL_GRAPH_UNUSED
+#else
 #define DNNL_GRAPH_UNUSED __attribute__((__unused__))
+#endif /* _WIN32 */
 
 void register_schema(op_schema &&schema);
 
