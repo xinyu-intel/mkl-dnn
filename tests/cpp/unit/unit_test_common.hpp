@@ -70,7 +70,12 @@ public:
 };
 
 template <typename T>
+// todo(xinyu): fix sycl allocator for win32
+#ifdef _WIN32
+using vector = std::vector<T>;
+#else
 using vector = std::vector<T, TestAllocator<T>>;
+#endif /* _WIN32 */
 } // namespace test
 
 #endif

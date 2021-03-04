@@ -79,12 +79,12 @@ target_include_directories(${LIB_NAME}_api_test
 add_library(${LIB_NAME}_unit_test_objlib OBJECT
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/unit_test_common.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_allocator.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compile.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compiled_partition.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compile.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compiled_partition.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_dnnl_tensor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_engine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_ir.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_layout_id.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_layout_id.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_logical_tensor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_op.cpp
@@ -120,9 +120,23 @@ target_link_libraries(${LIB_NAME}_unit_test
     ${DNNL_GRAPH_TEST_LINK_FLAGS}
     ${LIB_NAME}_gtest
     ${LIB_NAME}_static # Use static to access private symbols not available in public API
-    dl
+    #{EXTRA_SHARED_LIBS}
     ${DNNL_GRAPH_COMMON_LINK_FLAGS} # FIXME: consider target_link_options from cmake 3.13
     )
 
+# Common configuration for tests / test cases on Windows
+function(maybe_configure_windows_test name kind)
+    if(WIN32)
+        string(REPLACE  ";" "\;" PATH "${CTESTCONFIG_PATH};$ENV{PATH}")
+        set_property(${kind} ${name} PROPERTY ENVIRONMENT "PATH=${PATH}")
+        if(TARGET ${name} AND CMAKE_GENERATOR MATCHES "Visual Studio")
+            configure_file(${PROJECT_SOURCE_DIR}/cmake/template.vcxproj.user
+                ${name}.vcxproj.user @ONLY)
+        endif()
+    endif()
+endfunction()
+
 add_test("${LIB_NAME}_api_test" "${LIB_NAME}_api_test")
+maybe_configure_windows_test("${LIB_NAME}_api_test" TEST)
 add_test("${LIB_NAME}_unit_test" "${LIB_NAME}_unit_test")
+maybe_configure_windows_test("${LIB_NAME}_unit_test" TEST)
