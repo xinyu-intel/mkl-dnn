@@ -22,7 +22,12 @@
 void *allocate(size_t mem_size, dnnl_graph_allocator_attr_t attr) {
     (void)attr;
     void *ptr;
+#ifdef _WIN32
+    ptr = _aligned_malloc(mem_size, MEM_ALIGNMENT);
+    int ret = ((ptr) ? 0 : errno);
+#else
     int ret = posix_memalign(&ptr, MEM_ALIGNMENT, mem_size);
+#endif /* _WIN32 */
     return (ret == 0) ? ptr : NULL;
 }
 

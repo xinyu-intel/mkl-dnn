@@ -356,7 +356,7 @@ int main(int argc, char **argv) {
     float *dst_data = out_list_1[0].get_data_handle<float>();
     // Because the input/output channel is divisiable by 8(avx2) or 16(avx512),
     // we can check the result elementwise-ly.
-    for (size_t i = 0; i < out_list_1[0].get_element_num(); ++i) {
+    for (int64_t i = 0; i < out_list_1[0].get_element_num(); ++i) {
         if (std::abs(dst_data[i] - expected_result) > 1e-6f) {
             throw std::runtime_error(
                     "output result is not equal to excepted "
