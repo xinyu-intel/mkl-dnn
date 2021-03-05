@@ -206,7 +206,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif()
 
 # TODO(Xinyu): fix check headers for windows
-if(NOT MSVC)
+if(NOT WIN32)
     include("cmake/check_headers.cmake")
 endif()
 include("cmake/Doxygen.cmake")

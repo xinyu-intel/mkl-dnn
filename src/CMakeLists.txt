@@ -18,7 +18,7 @@
 # The library is then used to link the final shared library (dnnl_graph.so) and unit level
 # tests (dnnl_graph_unit_test)
 
-if(MSVC)
+if(WIN32)
     add_definitions(-DDNNL_GRAPH_DLL_EXPORTS)
 endif()
 
