@@ -45,12 +45,6 @@ namespace impl = dnnl::graph::impl;
 namespace dnnl_impl = impl::dnnl_impl;
 namespace utils = dnnl::graph::tests::unit::utils;
 
-static impl::kernel_registry &get_dnnl_kernel_registry() {
-    return std::dynamic_pointer_cast<dnnl_impl::dnnl_backend>(
-            impl::backend_manager::get_backend("dnnl"))
-            ->get_kernel_registry();
-}
-
 TEST(operator_compile, convolution_compile_fp32) {
     using dims = impl::dnnl_impl::dims;
 

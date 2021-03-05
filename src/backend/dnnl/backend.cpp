@@ -15,6 +15,7 @@
  *******************************************************************************/
 
 #include "interface/partition.hpp"
+#include "interface/backend.hpp"
 
 #include "backend/dnnl/backend.hpp"
 #include "backend/dnnl/operators.hpp"

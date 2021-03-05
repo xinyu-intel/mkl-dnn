@@ -79,12 +79,12 @@ target_include_directories(${LIB_NAME}_api_test
 add_library(${LIB_NAME}_unit_test_objlib OBJECT
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/unit_test_common.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_allocator.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compile.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compiled_partition.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compile.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_compiled_partition.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_dnnl_tensor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_engine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_ir.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_layout_id.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_layout_id.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_logical_tensor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unit/test_op.cpp

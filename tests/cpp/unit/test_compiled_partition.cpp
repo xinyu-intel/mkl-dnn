@@ -27,6 +27,9 @@ namespace utils = dnnl::graph::tests::unit::utils;
 TEST(compiled_partition, relu) {
     impl::engine_t &eng = get_engine();
 
+    size_t operator_num = get_dnnl_kernel_registry().get_register_kernels_num();
+    ASSERT_NE(operator_num, 0);
+
     impl::node_t relu_node(impl::op_kind::ReLU);
     relu_node.set_attr<std::string>("backend", "dnnl");
 
@@ -93,6 +96,9 @@ TEST(compiled_partition, relu) {
 
 TEST(compiled_partition, search_required_inputs_outputs) {
     impl::engine_t &eng = get_engine();
+
+    size_t operator_num = get_dnnl_kernel_registry().get_register_kernels_num();
+    ASSERT_NE(operator_num, 0);
 
     impl::node_t relu_node(impl::op_kind::ReLU);
     relu_node.set_attr<std::string>("backend", "dnnl");
@@ -206,6 +212,9 @@ TEST(compiled_partition, search_required_inputs_outputs) {
 TEST(compiled_partition, allow_repeated_inputs) {
     impl::engine_t &eng = get_engine();
 
+    size_t operator_num = get_dnnl_kernel_registry().get_register_kernels_num();
+    ASSERT_NE(operator_num, 0);
+
     impl::node_t n(impl::op_kind::Multiply);
     n.set_attr<std::string>("backend", "dnnl");
 
@@ -264,6 +273,9 @@ TEST(compiled_partition, allow_repeated_inputs) {
 
 TEST(compiled_partition, not_allow_repeated_inputs) {
     impl::engine_t &eng = get_engine();
+
+    size_t operator_num = get_dnnl_kernel_registry().get_register_kernels_num();
+    ASSERT_NE(operator_num, 0);
 
     impl::node_t n(impl::op_kind::MatMul);
     n.set_attr<std::string>("backend", "dnnl");

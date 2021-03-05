@@ -30,6 +30,11 @@ TEST(layout_id_test, opaque_md_layout_id_mapping) {
     using data_type = dnnl_impl::tensor::desc::data_type;
     using format_tag = dnnl_impl::tensor::desc::format_tag;
 
+#ifdef _WIN32
+    static bool dnnl_enabled = impl::backend_manager::register_backend("dnnl",
+            &impl::backend_manager::create_backend<dnnl_impl::dnnl_backend>);
+    if (!dnnl_enabled) { throw std::exception("cannot init dnnl backend."); };
+#endif // _WIN32
     dnnl_impl::dnnl_layout_id_manager &mgr
             = std::dynamic_pointer_cast<dnnl_impl::dnnl_backend>(
                     impl::backend_manager::get_backend("dnnl"))

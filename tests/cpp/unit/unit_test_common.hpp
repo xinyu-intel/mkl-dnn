@@ -20,14 +20,30 @@
 #include <memory>
 #include <vector>
 
+#include "interface/backend.hpp"
 #include "interface/engine.hpp"
 #include "interface/stream.hpp"
+
+#include "backend/dnnl/backend.hpp"
+#include "backend/dnnl/common.hpp"
 
 #if DNNL_GRAPH_WITH_SYCL
 #include <CL/sycl.hpp>
 #endif
 
 namespace impl = dnnl::graph::impl;
+namespace dnnl_impl = impl::dnnl_impl;
+
+static impl::kernel_registry &get_dnnl_kernel_registry() {
+#ifdef _WIN32
+    static bool dnnl_enabled = impl::backend_manager::register_backend("dnnl",
+            &impl::backend_manager::create_backend<dnnl_impl::dnnl_backend>);
+    if (!dnnl_enabled) { throw std::exception("cannot init dnnl backend."); };
+#endif // _WIN32
+    return std::dynamic_pointer_cast<dnnl_impl::dnnl_backend>(
+            impl::backend_manager::get_backend("dnnl"))
+            ->get_kernel_registry();
+}
 
 #if DNNL_GRAPH_WITH_SYCL
 cl::sycl::device &get_device();

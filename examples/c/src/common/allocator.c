@@ -32,5 +32,9 @@ void *allocate(size_t mem_size, dnnl_graph_allocator_attr_t attr) {
 }
 
 void deallocate(void *buffer) {
+#ifdef _WIN32
+    _aligned_free(buffer);
+#else
     free(buffer);
+#endif /* _WIN32 */
 }
